@@ -1,6 +1,6 @@
 function iconClicked()
 {
-	chrome.management.getAll( apiCallback );
+	chrome.management.getBriefExtensionList() apiCallback );
 }
 
 function apiCallback(extensions)
