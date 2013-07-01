@@ -5,6 +5,7 @@ function RateExtension(){
 	self.itsTab = undefined;											// Tab identification info
 	self.itsResult = undefined;											// Web result Json
 	self.itsPath = "http://rate-extension.appspot.com/api/v1/post"		// Path to the webservice
+	self.itsErrors = [];
 
 	// saves the current tab
 	self.setTab = function(inTab){
@@ -18,6 +19,7 @@ function RateExtension(){
 	};
 
 	// saves the extension json returned from chrome
+	// and calles the web service
 	self.setExtensions = function(inExtension){
 		self.itsExtensions = inExtension;
 		self.postAjax();
@@ -32,10 +34,14 @@ function RateExtension(){
 	// returns a copy of the web service results
 	self.getResults = function(){
 		var rslt = itsResult;
-		//todo: check for errors and append so the other page get notified
 		return rslt;
 	};
 
+	// returns the error array
+	self.getErrors = function(){
+		var err = self.itsErrors;
+		return err;
+	}
 	// Opens a tab if enter
 	self.iconClicked = function(){
 		if(self.itsTab === undefined){
@@ -58,7 +64,8 @@ function RateExtension(){
 	self.xhrFail = function(xhr, status, err){
 		console.log("Ajax Request Failed:" + status);
 		console.log(err);
-		//todo: set some error message in itsResult
+		self.itsErrors.push("Failed contacting web service");
+		self.itsResult = {};
 	};
 
 	// post to webservice
@@ -97,7 +104,7 @@ chrome.browserAction.onClicked.addListener( theExtension.iconClicked );
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.run)
-      sendResponse({extensions: theExtension.getResults()});
+      sendResponse({extensions: theExtension.getResults(), errors: theExtension.getErrors()});
   });
 
 console.log("On extension load finished");
