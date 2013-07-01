@@ -1,24 +1,20 @@
 
-
-
-
 // makes a div entity out of a single extension response 
 function makeEntry(entry){
   console.log(entry);
   el = document.createElement("div");
   $(el).addClass('extEntry').attr('id', entry.id);
-   
-  $(el).append('<p class="name">' + entry.name + '</p>');
-  $(el).append('<p class="extCat">' + entry.category + '</p>');
-  $(el).append('<p class="extRank">' + entry.rank + '</p>');
-
+  
   chrome.management.get(entry.id, function(rslt){
     var imgPath = "img/none.png";
     if(rslt.icons.length > 1){imgPath = rslt.icons[1].url;}
     else if(rslt.icons.length === 1){imgPath = rslt.icons[0].url;}
-    $('#' + rslt.id).append('<img src="' + imgPath +'"/>')
+    $('#' + rslt.id).append('<img class="extIcon" src="' + imgPath +'"/>')
   });
 
+  $(el).append('<p class="name">' + entry.name + '</p>');
+  $(el).append('<p class="extCat">' + entry.category + '</p>');
+  $(el).append('<p class="extRank">' + entry.rank + '</p>');
 
   return el
 }
