@@ -20,12 +20,13 @@ function RateExtension(){
 	// saves the extension json returned from chrome
 	self.setExtensions = function(inExtension){
 		self.itsExtensions = inExtension;
+		self.postAjax();
 	};
 
 	// returns a copy of the extension json returned from chrome
+	// waits for it to hold a value for five seconds cause of callback to callback issue
 	self.getExtensions = function(){
-		var rslt = self.itsExtensions;
-		return rslt;
+		return JSON.stringify(self.itsExtensions);
 	};
 
 	// returns a copy of the web service results
@@ -62,14 +63,16 @@ function RateExtension(){
 
 	// post to webservice
 	self.postAjax = function(){
-		$.ajax({
-		  //dataType: "json",
+		console.log("sending ajax");
+		theData = {
+		  dataType: "json",
 		  url: self.itsPath,
 		  data: self.getExtensions(),
 		  success: self.xhrSuccess,
 		  error: self.xhrFail,
 		  type: "POST"
-		});
+		}
+		$.ajax(theData);
 	};
 
 	// object initilazion code 
@@ -79,7 +82,6 @@ function RateExtension(){
 		//		The function is however working on our linux build.
 		chrome.management.getAll(self.setExtensions);
 		//chrome.management.getBriefExtensionList( self.setExtensions );
-		self.postAjax();
 	};
 
 	//initialize the object and return
@@ -98,4 +100,4 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       sendResponse({extensions: theExtension.getResults()});
   });
 
-console.log("On extension load finnished");
+console.log("On extension load finished");
