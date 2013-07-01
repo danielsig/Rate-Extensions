@@ -3,16 +3,16 @@
 function makeEntry(entry){
   console.log(entry);
   el = document.createElement("div");
-  $(el).addClass('extEntry')
-  if(entry.enabled){
-    $(el).append('<img src="imageenabled.png" class="imgEnabled"/>');
+  $(el).addClass('extEntry btn btn-large' + (entry.enabled ? ' btn-primary' : ''))
+  /*if(entry.enabled){
+    $(el).append('<img src="imageenabled.png" class="btn disabled"/>');
   }
   else{
-    $(el).append('<img src="imagedisabled.png" class="imgDisabled"/>');
-  }
-  $(el).append('<p class="name">' + entry.name + '</p>');
-  $(el).append('<p class="extCat">' + entry.category + '</p>');
-  $(el).append('<p class="extRank">' + entry.rank + '</p>');
+    $(el).append('<img src="imagedisabled.png" class="btn disabled"/>');
+  }*/
+  $(el).append('<h3 class="name">' + entry.name + '</h3>');
+  $(el).append('<p class="extCat btn btn-success btn-block">' + entry.category + '</p>');
+  $(el).append('<p class="extRank btn btn-info btn-block">' + entry.rank + '</p>');
 
   return el
 }
